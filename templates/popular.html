@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+
+<div class="container mt-5">
+
+  <div class="row" id="cards-container">
+      
+    {% include 'cards_partial.html' %}
+      
+      
+  </div>
+  <div class="row">
+    {% if perms.PSI_DUCK.view_karta %}
+          <a href="{% url 'cart' %}" class="btn btn-primary">View cart
+              <div class="shopping-cart">
+                <div class="cart-items">{{ cart_items_count }}</div>
+                <img src="https://img.icons8.com/ios/50/000000/shopping-cart.png"/>
+              </div>
+          </a>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}

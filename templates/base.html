@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=0.5 " />
+  <title>PokeShop</title>
+  <!-- Bootstrap CSS -->
+    <link rel="shortcut icon" type="image/png" href="{% static 'img/logo.png' %}" >
+
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <style>
+    /* Custom CSS */
+    .cart-popup {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      display: none; /* Hidden by default */
+      z-index: 999; /* Ensure it appears on top of other content */
+    }
+  </style>
+</head>
+<header style="background-color: aquamarine; text-align: center">
+    {% block header %}
+        {% if messages %}
+            {% for msg in messages %}
+                {{ msg }}
+            {% endfor %}
+            <br>
+        {% endif %}
+
+
+{#        autenticate  vraca user-a#}
+        {% if user.is_authenticated %}
+            <a href="{% url 'logout' %}">logout</a>
+            	   {{ user}}
+        {% else %}
+            <a href="{% url 'login' %}">login</a>
+        {% endif %}
+
+    {% endblock %}
+
+</header>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="{% url 'home' %}" >
+    <img src="{% static 'img/logo.png' %}" class="navbar-icon" alt="Logo" style="width: 8%;"> <!-- Icon added beside the logo -->
+    PokemonShop
+  </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Account
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="{% url 'wishlist' %}">Wishlist</a>
+          <a class="dropdown-item" href="{% url 'purchase_history' %}">Purchase History</a>
+          <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+        </div>
+      </li>
+      <li class="nav-item">
+          <a class="nav-link" href="{% url 'login' %}">Login</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'register' %}">Register</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+{% block content %}
+
+{% endblock %}
+
+
+<!-- Bootstrap JS, Popper.js, and jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+<footer style=" bottom: 0; text-align: center; background: deepskyblue; width: 100%; left: 0">
+    Copyright PSI-duck Company
+</footer>
+</html> 

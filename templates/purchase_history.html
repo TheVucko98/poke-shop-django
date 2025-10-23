@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<!-- Main Content -->
+<div class="container mt-5">
+  <h2>Purchase History</h2>
+  <!-- Purchase History Table -->
+  <table class="table table-dark table-striped text-center table-hover">
+    <thead>
+      <tr>
+        <th scope="col">Image</th>
+        <th scope="col">Name</th>
+        <th scope="col">Price</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Date</th>
+        <th scope="col">Time</th>
+        <th scope="col">Total Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for entry in purchase_history%}
+      <tr>
+        <td><img src="{{ entry.karta.slika.url }}" alt="Card Image" style="width: 20%;"></td>
+        <td>{{ entry.karta.naziv }}</td>
+        <td>${{ entry.karta.cena_sa_popustom }}</td>
+        <td>{{ entry.kolicina }}</td>
+        <td>{{ entry.datum }}</td>
+        <td>{{ entry.vreme }}</td>
+        <td>${{ entry.total_price }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}

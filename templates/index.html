@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<!-- Main Content -->
+<div class="container mt-5">
+<div class="row">
+    <div class="col-md-12 mb-3">
+      <div class="form-group">
+        <label for="sorting" style="color: black; font-size:x-large ;">Sort by:</label>
+        <select class="form-control" id="sorting" style="width: 25%;">
+          <option value="nameasc" selected>Name (nameasc)</option>
+          <option value="namedesc" >Name (namedesc)</option>
+          <option value="priceasc" >Price (priceasc)</option>
+          <option value="pricedesc">Price (pricedesc)</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="row" id="cards-container">
+      
+      
+      
+    {% include 'cards_partial.html' %}
+      
+      
+  </div>
+  <!-- Button for Most Popular Cards -->
+  <div class="row">
+    <div class="col-md-12 text-center">
+           <a href="{% url 'popular' %}" name="mostPopular" class="btn btn-lg" style="background-color: orange; color: white; border: 2px solid white;">Most popular cards!</a>
+    </div>
+    {% if perms.PSI_DUCK.add_karta %}
+    	<div class="col-md-12 text-center mt-3">
+             <a href="{% url 'addcard' %}" class="btn btn-lg btn-success">Add new card</a>
+        </div>
+    {% endif %}
+{#        How  TO SEEE PERMISIONS    #}
+        {#<ul>#}
+        {#{% for perm in user.get_all_permissions %}#}
+        {#    <li>{{ perm }}</li>#}
+        {#{% endfor %}#}
+        {#</ul>#}
+    {% if perms.PSI_DUCK.add_korpa %}
+          <a href="{% url 'cart' %}" class="btn btn-primary">View cart
+              <div class="shopping-cart">
+                <div class="cart-items">{{ cart_items_count }}</div>
+                <img src="https://img.icons8.com/ios/50/000000/shopping-cart.png"/>
+              </div>
+          </a>
+    {% endif %}
+  </div>
+</div>
+
+{#    Ovo cudo je tu radi sortiranja karata i pamcenja sorta u LocalStorage da bi kada #}
+{#    se korisnik vrati opet mogao isti sort da mu se pokaze#}
+<script>
+  function fetchCards(sort_by = null) {
+         if (!sort_by) {
+              sort_by = document.getElementById('sorting').value;
+            }
+         fetch(`{% url 'fetch_cards' %}?sort_by=${sort_by}`)
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('cards-container').innerHTML = data['html'];
+        })
+        .catch(error => {
+            console.error('Error fetching cards:', error);
+        });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Set the sorting option from local storage
+    const savedSortOption = localStorage.getItem('sort_by');
+    if (savedSortOption) {
+      document.getElementById('sorting').value = savedSortOption;
+    }
+
+    fetchCards(savedSortOption)
+    // Fetch cards every second
+
+    // Fetch cards on sorting change
+    document.getElementById('sorting').addEventListener('change', function(event) {
+      const selectedSortOption = event.target.value;
+      localStorage.setItem('sort_by', selectedSortOption);
+      fetchCards(selectedSortOption);
+    });
+
+    setInterval(fetchCards, 5000);
+
+});
+
+</script>
+
+{% endblock %}

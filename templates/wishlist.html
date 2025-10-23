@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+  <h1 style="text-align: center">Your Wishlist</h1>
+    <br>
+    {% if brkarata == 0 %} <h2 style="text-align: center"> Your wishlist is empty! </h2> {% endif %}
+  <div class="row">
+    {% for item in wishlist_items %}
+      <div class="col-md-4 mb-4">
+        <div class="card" id="karta{{ item.karta.id }}">
+          <a href="{% url 'card_details' item.karta.id %}">
+            <img src="{{ item.karta.slika.url }}" class="card-img-top {% if item.karta.brPrimeraka == 0 %}grayscale{% endif %}" alt="{{ item.karta.naziv }}">
+            <div class="card-body">
+              <h5 class="card-title" style="font-size: x-large;">{{ item.karta.naziv }}</h5>
+            </div>
+          </a>
+          <p class="card-text description">Description: {{ item.karta.opis }}</p>
+          <p class="card-text">Price: ${{ item.karta.cena }}</p>
+          <p class="card-text">Discount: {{ item.karta.popust }}%</p>
+          <p class="card-text">Price with discount: ${{ item.karta.cena_sa_popustom }}</p>
+          <div class="btn-group" role="group" aria-label="Card Actions">
+                    <form method="POST" action="{% url 'like_card' item.karta.id %}">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-success">Like</button>
+            </form>
+            <form method="POST" action="{% url 'dislike_card' item.karta.id %}">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-danger">Dislike</button>
+            </form>
+            <form method="POST"   action="{% url 'remove_from_wishlist' item.karta.id %}">
+              {% csrf_token %}
+              <button type="submit" id="removeWishList{{ item.karta.id }}"class="btn btn-dark">Remove from wishlist</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+    <style>
+    .grayscale {
+      filter: grayscale(100%);
+    }
+      .description {
+        white-space: nowrap;        /* Prevents the text from wrapping */
+        overflow: hidden;           /* Ensures the overflow content is not visible */
+        text-overflow: ellipsis;    /* Adds the ellipsis ('...') */
+        display: block;             /* Ensures the element is a block-level element */
+        width: 100%;                /* Ensures the element takes the full width available */
+      }
+  </style>
+{% endblock %}

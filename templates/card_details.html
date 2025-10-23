@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<!-- Main Content -->
+<div class="container mt-5">
+  <!-- Card Details -->
+<div class="row">
+
+</div>
+  <div class="card-details-container">
+      <br>
+  <div class="row">
+      <div class="col-md-4 mb-4">
+{#    Ubacivanje drugog .html-a u ovaj kao deo njega      #}
+      {% include 'card_info.html' %}
+{#          #}
+          {% if perms.PSI_DUCK.change_karta %}
+
+              <form method="post" action="{% url 'confirm_delete' karta.id %}">
+                            {% csrf_token %}
+                        <br>
+                            <button type="submit" name="delete_this_card" class="btn btn-danger">Delete this card</button>
+                        </form>
+              {% endif %}
+      {% if perms.PSI_DUCK.change_karta %}
+
+              <form method="post" action="{% url 'increment_karta' karta.id %}">
+                            {% csrf_token %}
+                        <br>
+                            <button type="submit" name="add_another_instance" class="btn btn-dark">Add another instance</button>
+                        </form>
+              {% endif %}
+       {% if perms.PSI_DUCK.change_karta %}
+
+              <form method="post" action="{% url 'decrement_karta' karta.id %}">
+                            {% csrf_token %}
+                        <br>
+                            <button type="submit" name="delete_one_instance" class="btn btn-danger card-count-button">Delete one instance</button>
+                        </form>
+              {% endif %}
+
+  </div>
+  <div class="col-md-2"></div>
+  <div class="col-md-4 mb-4">
+{#   TO_DO #}
+        {% if perms.PSI_DUCK.change_karta %}
+
+
+            <form method="post" action="{% url 'update_card_price' karta.id %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="new_price">New price ($):</label>
+                        <input type="number" class="form-control" id="new_price" name="new_price" min="0" value="0" style="width: 100%;" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save price</button>
+                </form>
+
+                <br>
+
+                <form method="post" action="{% url 'update_card_discount' karta.id %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="new_discount">New Discount (%):</label>
+                        <input type="number" class="form-control" id="new_discount" name="new_discount" min="0" max="100" value="0" style="width: 100%;" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save discount</button>
+                </form>
+
+
+    {% endif %}
+      <br>
+   {% if perms.PSI_DUCK.add_korpa and karta.brPrimeraka > 0%}
+
+       <form method="post" action="{% url 'add_to_cart' karta.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary">Add to cart</button>
+       </form>
+
+    {% endif %}
+  </div>
+
+  </div>
+
+
+      <br><br>
+{#      <div class="row">#}
+{#        <div class="col-sm-12">#}
+{#            <button type="button" class="btn btn-success">Dodaj u magacin</button>#}
+{#        </div>#}
+{#      </div>#}
+{#      <br>#}
+{#      <div class="row">#}
+{#        <div class="col-sm-12">#}
+{#            <button type="button" class="btn btn-danger">Izbaci iz magacina</button>#}
+{#        </div>#}
+{#      </div>#}
+    </div>
+  </div>
+
+
+
+{% endblock %}

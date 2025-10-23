@@ -1,0 +1,109 @@
+#####ACA KOMENTAR 12.05.2024.
+    U svim .html zameniti:
+
+    1. linkove
+        "verovatno treba da ostanu i kasnije"
+
+    2. izvore za slike/fajlove
+        2.1:
+            za slike:
+                "one ce vrvt dinamicki da se rade"
+                    tako ne cimati se oko toga
+
+    3. Ubaciti base.html deo u svaki
+
+######NIKOLA KOMENTAR 12.05.2024.
+        -Za svaki html sad pise extends base.html i load static
+        -Nisam nista dodavao za slike, ostale su takve kakve jesu, treba da se dogovorimo sta cemo da radimo u vezi toga
+        -Projekat preuzet sa gita iz pycharm se pokrece tako sto ukucate u terminalu:
+            python.exe ./manage.py runserver
+
+#####NIKOLA KOMENTAR 14.05.2024.
+        -Procitati komentare iz models.py da sad ne pisem ovde sve
+        -Uputstvo za konektovanje sa bazom:
+            *Otvorite mySqlWorkbench i onda u SCHEMAS prozoru desni klik pa createSchema
+            *Nazovite schemu 'PokeProdavnica'
+            *Postavite vas root i password u settings.py
+            *u terminalu u pycharm ukucajte komande:
+                python.exe .\manage.py makemigrations
+                python.exe .\manage.py migrate
+            *otvorite mySqlWorkbench desni klik na vasu bazu i refresh all
+            *Posto iz Djanga ne moze da se postavlja kompozicioni primarni kljuc, potrebno je da alterujete tabele korpa i lista zelja tako da
+             izbrisete podrazumevani id i chekirate da su ovi strani kljucevi i primarni
+
+#####ACA KOMENTAR 15.05.2024.
+        -Instalacija mysqlclient za bazu
+            *ctrl+alt+s
+             *izabrati "+"
+              *mysqlclient
+               *naci i 'install'
+
+        -Lozinka i sifra za superusera, pristup iz django admin stranice:
+            *sifra: admin
+            *password: 123
+
+        -Crispy forms, da bi radile, install ovo dole:
+            *pip install django-crispy-forms
+            *pip install crispy-bootstrap4
+
+        -Potrebno je dodati tabelu za lajovanje koja ce povezivati registrovanog korisnika i Karta
+
+#####NIKOLA KOMENTAR 16.05.2024.
+        -Updatovana baza - ubacene 2 grupe: moderator i registrovan korisnik sa permisijama. Ovo je inicijalna baza
+        -Updatovani primary key za tabele 'korpa' i 'lista zelja'
+
+##############  Aleksandar   17.5.2024.
+
+        Ova se zovu permisije :
+
+
+        PSI_DUCK.view_listazelja
+        PSI_DUCK.add_karta
+        PSI_DUCK.add_korpa
+        PSI_DUCK.change_informacijeporudzbine
+        PSI_DUCK.delete_karta
+        PSI_DUCK.view_korpa
+        PSI_DUCK.delete_listazelja
+        PSI_DUCK.add_listazelja
+        PSI_DUCK.delete_korpa
+        PSI_DUCK.view_informacijeporudzbine
+        PSI_DUCK.change_karta
+        PSI_DUCK.view_karta
+
+    Mora velika slova nije "case insensitive"
+
+        Primer provere permijsie :
+
+          {% if perms.PSI_DUCK.add_karta %}
+            # Tekst neki koji stavite
+            <div class="col-md-12 text-center mt-3">
+                 <a href="{% url 'addcard' %}" class="btn btn-lg btn-success">Dodaj novu karticu</a>
+            </div>
+
+        {% endif %}
+
+########## Aleksandar 21.05.2024.
+
+
+    "fetch()" raditi direktno u ".html"
+
+    Ako se radi kroz ".js" uvezen iz static.
+    Nece raditi.
+
+########## Nikola 27.05.2024.
+    Mislim da ipak mora da postoji id za listu zelja i id za korpa kao zasebno polje posto nikako ne radi bez njega,
+    django ne prepoznaje taj kompozitni kljuc i stalno ocekuje da postoji korpa.id na primer, pa sam zbog toga promenio bazu.
+
+########## Nikola 28.05.2024.
+    Purchase history bi trebalo da radi, samo je problem oko vremenske zone, ne znam kako to da namestim.
+        U settings.py imate polje TIME_ZONE pa probajte tu da kazete 'Europe/Belgrade', i da vam je USE_TZ = True
+        ako to ne radi, onda treba podesiti i u mqsql vremensku zonu a to ne znam kako se radi
+    Moguce implementiranje sortiranja u purchase history i u cart (opciono)
+    TREBA DA SE IZBRISE 'django.middleware.csrf.CsrfViewMiddleware' iz installed apps
+
+########## Nikola 29.05.2024.
+    Treba dokumentovati views, models i forms.py, pratiti uputstvo na sajtu
+    pratiti primer kako je uradio aca u index.html, na admin stranici u documentation tabu u gornjem desnom uglu je formatirano kako izgleda
+
+########## Nikola 04.06.2024.
+    Treba ubaciti da ne moze da se udje na checkout, kad je prazna korpa

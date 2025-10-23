@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+
+<!-- Main Content -->
+<div class="container mt-5">
+{% if total_price == 0 %}
+	<br>
+    <h1 style="text-align: center">You didn't add any items to the cart!</h1>
+{% else %}
+
+  <div class="row">
+    <!-- Checkout Form -->
+    <div class="col-md-8">
+      <h2 style="text-align: center; font-size: 35px">Payment</h2>
+      <hr>
+      <form method="post" action="{% url 'checkout' %}">
+        {% csrf_token %}
+          {% crispy form %}
+          <br>
+      </form>
+
+    </div>
+    <!-- Order Summary -->
+    <div class="col-md-4">
+      <h2>Your Order</h2>
+
+      <div class="card">
+        <div class="card-body">
+          {% for item in cart_items %}
+            <div class="order-item">
+              <p><strong>Product Name:</strong> {{ item.karta.naziv }}</p>
+              <p><strong>Quantity:</strong> {{ item.brojArtikala }}</p>
+              <p><strong>Price:</strong> ${{ item.price }}</p>
+            </div>
+            <hr>
+          {% endfor %}
+          <p class="total-price"><strong>Total:</strong> ${{ total_price }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endif %}
+</div>
+<style>
+  .order-summary {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+  }
+  .order-item {
+    margin-bottom: 15px;
+  }
+  .order-item p {
+    margin: 0;
+  }
+  .total-price {
+    font-size: 1.2em;
+    text-align: center;
+  }
+  hr {
+    border-top: 5px solid #dee2e6;
+  }
+  legend{
+      font-style: italic;
+  }
+</style>
+
+{% endblock %}

@@ -1,0 +1,47 @@
+
+{% for karta in karte %}
+  <div class="col-md-4 mb-4">
+    <div class="card" id="karta{{ karta.id }}">
+      <a href="{% url 'card_details' karta.id %}">
+        <img src="{{ karta.slika.url }}" class="card-img-top {% if karta.brPrimeraka == 0 %}grayscale{% endif %}" alt="...">
+        <div class="card-body">
+          <h5 class="card-title" style="font-size: x-large;">{{ karta.naziv }}</h5>
+        </div>
+      </a>
+
+      <p class="card-text description">Description : {{ karta.opis }}</p>
+      <p class="card-text">Price : ${{ karta.cena }}</p>
+      <p class="card-text">Discount : {{ karta.popust }}%</p>
+      <p class="card-text">Price with discount : ${{ karta.cena_sa_popustom }}</p>
+
+<div class="btn-group" role="group" aria-label="Card Actions" style="display: flex; width: 100%;">
+    <form method="POST" action="{% url 'like_card' karta.id %}" style="flex: 0 0 25%; margin: 0;">
+        {% csrf_token %}
+        <button type="submit" id="like{{ karta.id }}" class="btn btn-success" style="width: 100%;">Like</button>
+    </form>
+    <form method="POST" action="{% url 'dislike_card' karta.id %}" style="flex: 0 0 25%; margin: 0;">
+        {% csrf_token %}
+        <button type="submit" id="dislike{{ karta.id }}" class="btn btn-danger" style="width: 100%;">Dislike</button>
+    </form>
+    <form method="POST" action="{% url 'add_to_wishlist' karta.id %}" style="flex: 0 0 50%; margin: 0;">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary" id="addToWishlist{{ karta.id }}" style="width: 100%;">Add to wishlist</button>
+    </form>
+</div>
+    </div>
+  </div>
+{% endfor %}
+
+<style>
+  .grayscale {
+    filter: grayscale(100%);
+  }
+
+  .description {
+    white-space: nowrap;        /* Prevents the text from wrapping */
+    overflow: hidden;           /* Ensures the overflow content is not visible */
+    text-overflow: ellipsis;    /* Adds the ellipsis ('...') */
+    display: block;             /* Ensures the element is a block-level element */
+    width: 100%;                /* Ensures the element takes the full width available */
+  }
+</style>

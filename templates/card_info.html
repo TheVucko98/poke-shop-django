@@ -1,0 +1,41 @@
+{% load static %}
+<div class="card-container">
+
+  <div class="card position-relative">
+    <img src="{{ slikaUrl }}" class="card-img-top {% if karta.brPrimeraka == 0 %}grayscale{% endif %}" alt="...">
+    <div class="card-body">
+      <h5 class="card-title" style="font-size: x-large;">{{ karta.naziv }}</h5>
+      <p class="card-text">Description: {{ karta.opis }}</p>
+      <p class="card-text">Price: ${{ karta.cena }}</p>
+      <p class="card-text">Discount: {{ karta.popust }}%</p>
+      <p class="card-text">Price with discount: ${{ karta.cena_sa_popustom }}</p>
+    </div>
+  </div>
+<div class="card-info bg-info text-white p-2 d-flex justify-content-between align-items-center">
+    <span>Number of cards:</span>
+    <button class="btn btn-warning" name="num_of_cards" style="pointer-events: none;">
+      {{ karta.brPrimeraka }}
+    </button>
+  </div>
+</div>
+<style>
+  .grayscale {
+    filter: grayscale(100%);
+  }
+  .card-container {
+    margin-bottom: 1rem;
+  }
+  .card-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #17a2b8; /* Bootstrap info background color */
+    color: white;
+    padding: 0.5rem;
+  }
+  .btn-light {
+    background-color: #f8f9fa; /* Bootstrap light button background color */
+    color: #000;
+  }
+</style>
+
